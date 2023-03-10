@@ -1,12 +1,24 @@
+include mixins/message
+
 doctype html
 html(lang="ko")
   head
-    title #{pageTitle} | #{siteName}
-    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css", crossorigin="anonymous")
+    title #{ pageTitle } | #{ siteName }
+    link(
+      rel="stylesheet",
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css",
+      crossorigin="anonymous"
+    )
     link(rel="stylesheet", href="/static/css/styles.css")
-    link(rel="shortcut icon" href="#")
+    link(rel="shortcut icon", href="#")
   body
-    include partials/header 
+    if messages.error
+      +message("error", messages.error)
+    if messages.info
+      +message("info", messages.info)
+    if messages.success
+      +message("sucess", messages.success)
+    include partials/header
     main
       block content
       include partials/footer

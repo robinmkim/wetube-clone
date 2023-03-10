@@ -194,6 +194,7 @@ export const postEdit = async (req, res) => {
 
 export const getChangePassword = (req, res) => {
   if (req.session.user.socialOnly === true) {
+    req.flash("error", "Can't change password.");
     return res.redirect("/");
   }
   return res.render("change-password", { pageTitle: "Change Password" });
@@ -224,12 +225,16 @@ export const postChangePassword = async (req, res) => {
   await user.save();
   req.session.user.password = user.password;
   // send notification
+  req.flash("info", "Password updated");
   return res.redirect("/users/logout");
 };
 
 export const edit = (req, res) => res.send("Edit User");
 export const see = async (req, res) => {
-  const { id } = req.params;
+  const {
+    params: { id },
+  } = req;
+  console.log(req.params);
   const user = await User.findById(id).populate({
     path: "videos",
     populate: {
@@ -237,6 +242,7 @@ export const see = async (req, res) => {
       model: "User",
     },
   });
+  console.log(user);
   if (!user) {
     return res.status(404).render("404", { pageTitle: "404: User Not Found" });
   }
