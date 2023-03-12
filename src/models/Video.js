@@ -1,5 +1,5 @@
 import { kMaxLength } from "buffer";
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 
 const videoSchema = new mongoose.Schema({
   title: { type: String, required: true, trim: true, maxLength: 80 },
@@ -11,6 +11,9 @@ const videoSchema = new mongoose.Schema({
   meta: {
     views: { type: Number, default: 0, required: true },
   },
+  comments: [
+    { type: mongoose.Schema.Types.ObjectId, require: true, ref: "Comment" },
+  ],
   owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
 });
 

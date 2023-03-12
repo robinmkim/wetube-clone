@@ -231,10 +231,7 @@ export const postChangePassword = async (req, res) => {
 
 export const edit = (req, res) => res.send("Edit User");
 export const see = async (req, res) => {
-  const {
-    params: { id },
-  } = req;
-  console.log(req.params);
+  const { id } = req.params;
   const user = await User.findById(id).populate({
     path: "videos",
     populate: {
@@ -242,12 +239,13 @@ export const see = async (req, res) => {
       model: "User",
     },
   });
-  console.log(user);
+  console.log(user.avatarUrl);
+  console.log(id);
   if (!user) {
-    return res.status(404).render("404", { pageTitle: "404: User Not Found" });
+    return res.status(404).render("404", { pageTitle: "User not found." });
   }
   return res.render("profile", {
-    pageTitle: `${user.name}'s profile`,
+    pageTitle: user.name,
     user,
   });
 };

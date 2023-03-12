@@ -12,6 +12,7 @@ const fullScreenBtn = document.getElementById("fullScreen");
 const fullScreenIcon = fullScreenBtn.querySelector("i");
 const videoContainer = document.getElementById("videoContainer");
 const videoControls = document.getElementById("videoControls");
+const textarea = document.getElementById("commentBox");
 
 let controlsTimeout = null;
 let controlsMovementTimeout = null;
@@ -124,6 +125,20 @@ const changeVideoTime = (seconds) => {
 };
 
 const handleKeys = (event) => {
+  if (event.target === commentBox) {
+    if (event.code === "Space") {
+      handlePlayClick();
+    }
+    if (event.code === "ArrowRight") {
+      changeVideoTime(5);
+    }
+    if (event.code === "ArrowLeft") {
+      changeVideoTime(-5);
+    }
+    if (event.key == "m" || event.key == "M") {
+      handleMuteClick();
+    }
+  }
   if (event.code === "Space") {
     handlePlayClick();
   }
