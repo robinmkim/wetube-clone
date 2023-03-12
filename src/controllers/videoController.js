@@ -72,12 +72,13 @@ export const postUpload = async (req, res) => {
     body: { title, description, hashtags },
     files: { video, thumb },
   } = req;
+  const isHeroKu = process.env.NODE_ENV === "production";
   try {
     const newVideo = await Video.create({
       title,
       description,
-      fileUrl: video[0].location,
-      thumbUrl: thumb[0].location,
+      fileUrl: isHeroKu ? video[0].location : video[0].path,
+      thumbUrl: isHeroKu ? thumb[0].location : thumb[0].path,
       hashtags: Video.formatHashtags(hashtags),
       owner: _id,
     });
