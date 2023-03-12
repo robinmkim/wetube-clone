@@ -1,4 +1,22 @@
 import multer from "multer";
+import multerS3 from "multer-s3";
+import { S3Client } from "@aws-sdk/client-s3";
+
+const s3 = new S3Client({
+  region: "us-east-2",
+  credentials: {
+    apiVersion: "2023-03-12",
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+});
+
+const s3VideoUploader = multerS3({
+  s3: s3,
+  bucket: "wetubeickhigh",
+  acl: "public-read",
+  contentType: multerS3.AUTO_CONTENT_TYPE,
+});
 
 export const localsMiddleware = (req, res, next) => {
   res.locals.loggedIn = Boolean(req.session.loggedIn);
@@ -30,6 +48,7 @@ export const avatarUpload = multer({
   limits: {
     fileSize: 3000000,
   },
+  storage: s3VideoUploader,
 });
 
 export const videoUpload = multer({
@@ -37,4 +56,5 @@ export const videoUpload = multer({
   limits: {
     fileSize: 25000000,
   },
+  storage: s3VideoUploader,
 });
